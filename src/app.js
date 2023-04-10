@@ -8,7 +8,9 @@ app.use(cors());
 
 const users = [];
 
-const tweets=[];
+const tweets = [];
+
+
 
 let userAvatar;
 
@@ -18,27 +20,39 @@ app.post("/sign-up", (req, res) => {
         username: req.body.username,
         avatar: req.body.avatar
     }
-    userAvatar=req.body.avatar;
+    userAvatar = req.body.avatar;
     users.push(user)
     res.send("OK")
 })
 
 app.post("/tweets", (req, res) => {
-    if(!users.includes(req.body.username)){
+    if (!users.includes(req.body.username)) {
         res.send("UNAUTHORIZED")
     }
-     const tweet={
+    const tweet = {
         username: req.body.username,
-        avatar:userAvatar,
+        avatar: userAvatar,
         tweet: req.body.tweet
-     }
-     tweets.push(tweet)
+    }
+    tweets.push(tweet)
     res.send("OK")
 })
 
-app.get("/tweets",(req,res)=>{
-    res.send(tweets)
-})
+app.get("/tweets", (req, res) => {
+    const tweetsLength = tweets.length;
+    const last10Tweets = [];
+    if (tweetsLength > 10) {
+
+    for (let i = (tweetsLength - 1); ; i--) {
+        last10Tweets.push(tweets[i])
+        if (last10Tweets.length === 10) {
+            return res.send(last10Tweets)
+        }
+    }
+}
+        res.send(tweets)
+    }
+)
 
 const PORT = 5000
 
