@@ -10,8 +10,6 @@ const users = [];
 
 const tweets = [];
 
-
-
 let userAvatar;
 
 app.post("/sign-up", (req, res) => {
@@ -34,24 +32,19 @@ app.post("/tweets", (req, res) => {
         avatar: userAvatar,
         tweet: req.body.tweet
     }
-    tweets.push(tweet)
+    tweets.unshift(tweet)
     res.send("OK")
 })
 
 app.get("/tweets", (req, res) => {
     const tweetsLength = tweets.length;
-    const last10Tweets = [];
-    if (tweetsLength > 10) {
+    
+    if(tweetsLength>10){
+           tweets.pop()
+    }
 
-    for (let i = (tweetsLength - 1); ; i--) {
-        last10Tweets.push(tweets[i])
-        if (last10Tweets.length === 10) {
-            return res.send(last10Tweets)
-        }
-    }
+    res.send(tweets)
 }
-        res.send(tweets)
-    }
 )
 
 const PORT = 5000
